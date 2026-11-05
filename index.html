@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f7f2e8">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="抽 Motion">
+<title>抽一條 Motion</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{height:100%;margin:0;overflow:hidden;background:#f7f2e8;}
+  body{height:100%;margin:0;overflow:hidden;}
+  body{
+    background:#f7f2e8;
+    color:#1b2430;
+    font-family:"PingFang TC","PingFang SC","Helvetica Neue",sans-serif;
+    display:flex;flex-direction:column;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    user-select:none;
+    position:relative;
+  }
+  /* 紙紋 */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(120% 90% at 50% 0%,rgba(255,255,255,.85),rgba(247,242,232,0) 60%),
+      radial-gradient(80% 60% at 50% 110%,rgba(196,168,120,.16),rgba(247,242,232,0) 70%);
+  }
+
+  header{
+    position:relative;z-index:2;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 28px 0;font-size:12.5px;letter-spacing:.16em;color:#8c8271;
+  }
+  .brand{font-weight:600;color:#a08040;}
+
+  .counter{display:flex;align-items:center;gap:10px;}
+  .num{font-variant-numeric:tabular-nums;color:#6b6152;letter-spacing:.04em;}
+  .tag{
+    padding:3px 10px;border-radius:99px;background:rgba(24,36,48,.06);
+    color:#5d5346;letter-spacing:.08em;font-size:11.5px;
+  }
+
+  main{
+    position:relative;z-index:2;flex:1 1 auto;min-height:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:0 40px;text-align:center;
+  }
+
+  .card{
+    width:100%;max-width:960px;
+    min-height:min(52vh,380px);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:min(3.4vh,26px);
+    padding:min(4vh,34px) min(4vw,44px);
+    border-radius:26px;
+    background:rgba(255,255,255,.55);
+    border:1px solid rgba(24,36,48,.10);
+    box-shadow:0 22px 60px rgba(90,70,40,.10), inset 0 1px 0 rgba(255,255,255,.9);
+    transition:transform .34s cubic-bezier(.22,1,.36,1),opacity .34s ease;
+  }
+  .card.flip{transform:translateY(14px) rotateX(8deg) scale(.985);opacity:.15;}
+
+  .en{
+    font-family:Georgia,"Times New Roman",'Songti SC',serif;
+    font-size:clamp(26px,4.4vw,52px);
+    line-height:1.24;letter-spacing:-.005em;font-weight:700;
+    max-width:100%;
+  }
+  .zh{
+    font-size:clamp(14px,1.6vw,19px);color:#7a7061;letter-spacing:.04em;line-height:1.6;
+  }
+  .meta{
+    display:flex;gap:14px;align-items:center;color:#a2967f;font-size:13px;letter-spacing:.14em;
+  }
+  .stars{color:#c9a04a;letter-spacing:.12em;}
+
+  .empty .en{color:#b7ab95;font-weight:400;font-family:"PingFang TC",serif;font-size:clamp(20px,2.4vw,26px);letter-spacing:.1em;}
+
+  .controls{
+    position:relative;z-index:2;flex:0 0 auto;
+    display:flex;align-items:center;justify-content:center;gap:18px;
+    padding:0 28px 34px;
+  }
+  .draw{
+    border:0;cursor:pointer;font-family:inherit;
+    font-size:19px;font-weight:600;letter-spacing:.1em;
+    color:#fff;background:linear-gradient(180deg,#2c3d52,#1b2430);
+    padding:19px 54px;border-radius:99px;
+    box-shadow:0 14px 34px rgba(24,36,48,.26), inset 0 1px 0 rgba(255,255,255,.16);
+    transition:transform .12s ease,box-shadow .2s;
+  }
+  .draw:active{transform:translateY(2px) scale(.99);box-shadow:0 8px 20px rgba(24,36,48,.24);}
+  .draw small{display:block;font-size:11px;letter-spacing:.24em;opacity:.55;margin-top:3px;font-weight:400;}
+
+  .reset{
+    border:0;background:none;cursor:pointer;font-family:inherit;font-size:13px;
+    color:#a2967f;letter-spacing:.1em;padding:10px 4px;
+  }
+  .reset:hover{color:#6b6152;}
+
+  footer{
+    position:relative;z-index:2;flex:0 0 auto;text-align:center;
+    font-size:11px;letter-spacing:.2em;color:#b6ab97;padding:0 28px 16px;
+  }
+
+  @media (max-width:700px){
+    header{padding:12px 18px 0;font-size:11px;}
+    main{padding:0 18px;}
+    .card{padding:26px 20px;border-radius:20px;min-height:46vh;}
+    .controls{padding:0 18px 26px;}
+    .draw{width:100%;padding:17px 20px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">MOTION DRAW · 英文辯論隊</div>
+  <div class="counter">
+    <span class="tag" id="tag">校園</span>
+    <span class="num" id="num">0 / 40</span>
+  </div>
+</header>
+
+<main>
+  <div class="card empty" id="card">
+    <div class="en" id="en">按下面抽一條辯題</div>
+    <div class="zh" id="zh">Tap the button to draw a motion</div>
+  </div>
+</main>
+
+<div class="controls">
+  <button class="draw" id="draw">抽一條<small>DRAW A MOTION</small></button>
+  <button class="reset" id="reset">重新洗牌</button>
+</div>
+
+<footer>逐光者科技團隊</footer>
+
+<script>
+const MOTIONS = [
+  // ── 校園 ──
+  ["Homework should be banned.", "應該廢除功課。", "校園", 1],
+  ["School should start at 10 a.m.", "學校應該十點才上課。", "校園", 1],
+  ["Students should be allowed to nap in class.", "應該准許學生上課睡覺。", "校園", 1],
+  ["Teachers should have to do the homework too.", "老師也應該一齊做功課。", "校園", 1],
+  ["Students should be paid for good grades.", "好成績應該有獎金。", "校園", 2],
+  ["Every class should have a class pet.", "每班都應該養一隻班寵。", "校園", 1],
+  ["School uniforms should include slippers.", "校服應該包括拖鞋。", "校園", 1],
+  ["The school canteen should be run by students.", "小食部應該由學生經營。", "校園", 2],
+  ["Every school should have a nap room.", "每間學校都應該有午睡室。", "校園", 1],
+  ["School trips should go to a theme park every year.", "每年學校旅行都應該去主題公園。", "校園", 1],
+  ["Exams should be replaced by group projects.", "考試應該改為小組報告。", "校園", 2],
+  ["Summer holidays should be split into three shorter ones.", "暑假應該拆成三個短假期。", "校園", 2],
+
+  // ── 生活 ──
+  ["A hot dog is a sandwich.", "熱狗算是三文治。", "生活", 1],
+  ["Cereal is a kind of soup.", "粟米片是一種湯。", "生活", 1],
+  ["Pineapple belongs on pizza.", "菠蘿應該放在薄餅上。", "生活", 1],
+  ["Toilet paper should hang over, not under.", "廁紙應該向外拉。", "生活", 1],
+  ["You should always eat dessert first.", "應該先吃甜品。", "生活", 1],
+  ["Pizza tastes better eaten with a fork.", "用叉吃薄餅更好味。", "生活", 1],
+  ["Socks with sandals should be banned.", "涼鞋配襪子應該被禁止。", "生活", 1],
+  ["Cats make better pets than dogs.", "貓比狗更適合做寵物。", "生活", 1],
+  ["Breakfast in bed is the best meal of the day.", "在床上吃早餐是最好的。", "生活", 1],
+  ["Everyone should have a personal theme song.", "每個人都應該有主題曲。", "生活", 1],
+  ["It is fine to re-gift a present.", "轉送禮物沒有問題。", "生活", 1],
+  ["Mondays should be cancelled.", "星期一應該取消。", "生活", 1],
+  ["Being 12 is better than being 18.", "十二歲比十八歲好。", "生活", 1],
+  ["A rainy day is better than a sunny day.", "雨天比晴天好。", "生活", 1],
+
+  // ── 科技 ──
+  ["AI should be allowed to write your homework.", "應該准許用 AI 做功課。", "科技", 1],
+  ["Robots should do all the housework.", "機械人應該做所有家務。", "科技", 1],
+  ["Video games are a real sport.", "打機也算一項運動。", "科技", 1],
+  ["Selfies should be banned at school.", "校園應該禁止自拍。", "科技", 1],
+  ["Emoji are a real language.", "表情符號是一種語言。", "科技", 1],
+  ["A robot dog is as good as a real dog.", "機械狗和真狗一樣好。", "科技", 1],
+  ["Everyone should learn to code.", "每個學生都應該學編程。", "科技", 2],
+  ["Streaming has killed the cinema.", "串流平台殺死了電影院。", "科技", 2],
+  ["Phones should be allowed during breaks.", "小息應該准許用手機。", "科技", 1],
+  ["Influencers are not good role models.", "網紅不是好榜樣。", "科技", 2],
+
+  // ── 價值 ──
+  ["It is okay to tell a white lie.", "善意的謊言可以接受。", "價值", 2],
+  ["Talent matters more than hard work.", "天份比努力更重要。", "價值", 2],
+  ["Failure teaches more than success.", "失敗比成功更能教人。", "價值", 1],
+  ["Money can buy happiness.", "金錢可以買到快樂。", "價值", 1],
+  ["It is better to be lucky than smart.", "運氣好比聰明好。", "價值", 1],
+  ["Being polite is more important than being honest.", "有禮貌比誠實更重要。", "價值", 2],
+  ["Reading fiction is not a waste of time.", "讀小說不是浪費時間。", "價值", 1],
+  ["A good friend should always tell you the truth.", "好朋友應該永遠對你說真話。", "價值", 2],
+  ["It is never too late to say sorry.", "道歉永遠不會太遲。", "價值", 1],
+  ["Winning is not the most important thing.", "贏不是最重要的事。", "價值", 1]
+];
+
+const $ = id => document.getElementById(id);
+let deck = [], used = 0, busy = false;
+
+function shuffle(a){
+  for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+
+function resetDeck(){
+  deck = shuffle(MOTIONS.map((_,i)=>i));
+  used = 0;
+  $("num").textContent = "0 / " + MOTIONS.length;
+  $("tag").textContent = "未開始";
+}
+
+function draw(){
+  if(busy) return;
+  busy = true;
+
+  if(used >= deck.length){
+    // 一輪抽完，重新洗牌
+    resetDeck();
+  }
+
+  const card = $("card");
+  card.classList.add("flip");
+
+  // 洗牌動畫：快速閃幾個題目
+  const flick = setInterval(()=>{
+    const r = MOTIONS[deck[used % deck.length]];
+    $("en").textContent = r[0];
+    $("zh").textContent = r[1];
+  }, 70);
+
+  setTimeout(()=>{
+    clearInterval(flick);
+    const m = MOTIONS[deck[used]];
+    used++;
+
+    card.classList.remove("empty");
+    $("en").textContent = m[0];
+    $("zh").textContent = m[1];
+    $("tag").textContent = m[2];
+    $("num").textContent = used + " / " + deck.length;
+
+    card.classList.remove("flip");
+    busy = false;
+  }, 380);
+}
+
+$("draw").addEventListener("click", draw);
+$("reset").addEventListener("click", ()=>{
+  resetDeck();
+  $("card").classList.add("empty");
+  $("en").textContent = "按下面抽一條辯題";
+  $("zh").textContent = "Tap the button to draw a motion";
+  $("num").textContent = "0 / " + MOTIONS.length;
+});
+
+document.addEventListener("keydown", e=>{
+  if(e.code === "Space" || e.key === "Enter"){ e.preventDefault(); draw(); }
+});
+
+// 點畫面任何地方也能抽
+document.addEventListener("click", e=>{
+  if(e.target.closest("button")) return;
+  draw();
+});
+
+resetDeck();
+
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){
+  window.addEventListener('load', ()=>{ navigator.serviceWorker.register('./sw.js').catch(()=>{}); });
+}
+</script>
+</body>
+</html>
