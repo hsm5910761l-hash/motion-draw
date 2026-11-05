@@ -1,65 +1,65 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 452" width="400" height="452">
   <defs>
-    <linearGradient id="navy" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#24384f"/>
-      <stop offset="55%" stop-color="#16233a"/>
-      <stop offset="100%" stop-color="#0d1624"/>
+    <linearGradient id="navy" x1="0" y1="0" x2=".25" y2="1">
+      <stop offset="0%" stop-color="#22374f"/>
+      <stop offset="52%" stop-color="#152540"/>
+      <stop offset="100%" stop-color="#0b1524"/>
     </linearGradient>
     <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e8c983"/>
-      <stop offset="45%" stop-color="#c9a04a"/>
-      <stop offset="100%" stop-color="#9e782c"/>
+      <stop offset="0%" stop-color="#f7e4b4"/>
+      <stop offset="40%" stop-color="#d8b060"/>
+      <stop offset="100%" stop-color="#9c7329"/>
     </linearGradient>
+    <linearGradient id="goldDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9b164"/>
+      <stop offset="100%" stop-color="#8a6620"/>
+    </linearGradient>
+    <radialGradient id="flame" gradientUnits="userSpaceOnUse" cx="200" cy="200" r="132">
+      <stop offset="0%" stop-color="#fffdf6"/>
+      <stop offset="34%" stop-color="#fbe6ad"/>
+      <stop offset="70%" stop-color="#e6bd6d"/>
+      <stop offset="100%" stop-color="#b5852f"/>
+    </radialGradient>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="core" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
     <clipPath id="shieldClip">
       <path d="M200 24 L352 72 V226 C352 316 286 376 200 406 C114 376 48 316 48 226 V72 Z"/>
     </clipPath>
   </defs>
 
-  <!-- 盾牌 -->
   <path d="M200 24 L352 72 V226 C352 316 286 376 200 406 C114 376 48 316 48 226 V72 Z"
-        fill="url(#navy)" stroke="url(#gold)" stroke-width="7" stroke-linejoin="round"/>
+        fill="url(#navy)" stroke="url(#gold)" stroke-width="9" stroke-linejoin="round"/>
 
   <g clip-path="url(#shieldClip)">
-    <!-- 光芒 -->
-    <g stroke="#c9a04a" stroke-width="3.6" stroke-linecap="round" opacity=".6">
-      <line x1="200" y1="58" x2="200" y2="84"/>
-      <line x1="158" y1="70" x2="170" y2="93"/>
-      <line x1="242" y1="70" x2="230" y2="93"/>
-      <line x1="124" y1="100" x2="144" y2="115"/>
-      <line x1="276" y1="100" x2="256" y2="115"/>
-      <line x1="106" y1="146" x2="132" y2="152"/>
-      <line x1="294" y1="146" x2="268" y2="152"/>
-      <line x1="104" y1="196" x2="130" y2="194"/>
-      <line x1="296" y1="196" x2="270" y2="194"/>
-    </g>
+    <path d="M200 48 L332 90 V226 C332 304 274 358 200 386 C126 358 68 304 68 226 V90 Z"
+          fill="none" stroke="url(#gold)" stroke-width="2.4" opacity=".5"/>
 
-    <!-- 朝陽 -->
-    <circle cx="200" cy="172" r="64" fill="url(#gold)" opacity=".22"/>
-    <circle cx="200" cy="172" r="64" fill="url(#gold)"/>
+    <!-- 火焰 -->
+    <path d="M200 62 C213 98 223 132 223 164 C223 196 213 218 200 218 C187 218 177 196 177 164 C177 132 187 98 200 62 Z"
+          fill="#e8c37b" opacity=".5" filter="url(#soft)"/>
+    <path d="M200 62 C213 98 223 132 223 164 C223 196 213 218 200 218 C187 218 177 196 177 164 C177 132 187 98 200 62 Z"
+          fill="url(#flame)"/>
+    <ellipse cx="200" cy="192" rx="12.5" ry="18" fill="#fffdf6" opacity=".85" filter="url(#core)"/>
 
-    <!-- 對話氣泡 -->
-    <g>
-      <rect x="108" y="178" width="184" height="102" rx="22" fill="#f7f2e8"/>
-      <path d="M152 280 L152 304 L186 280 Z" fill="#f7f2e8"/>
-      <circle cx="148" cy="229" r="9" fill="#16233a"/>
-      <circle cx="200" cy="229" r="9" fill="#16233a"/>
-      <circle cx="252" cy="229" r="9" fill="#16233a"/>
-    </g>
-
-    <!-- 窗戶：向校徽四方格致敬 -->
-    <g>
-      <rect x="170" y="306" width="60" height="60" rx="4" fill="none" stroke="#c9a04a" stroke-width="4.5"/>
-      <line x1="200" y1="306" x2="200" y2="366" stroke="#c9a04a" stroke-width="4.5"/>
-      <line x1="170" y1="336" x2="230" y2="336" stroke="#c9a04a" stroke-width="4.5"/>
-    </g>
+    <path d="M155 219 H245 L236 247 H164 Z" fill="url(#gold)"/>
+    <path d="M164 247 H236 L228 264 H172 Z" fill="url(#goldDark)"/>
+    <path d="M187 264 H213 L209 318 H191 Z" fill="url(#gold)"/>
+    <path d="M191 318 H209 L212 322 H188 Z" fill="url(#goldDark)"/>
+    <path d="M176 322 H224 L234 344 H166 Z" fill="url(#goldDark)"/>
+    <path d="M166 344 H234 V349 H166 Z" fill="url(#gold)"/>
 
   </g>
 
-  <!-- 彩帶 -->
   <g>
-    <path d="M58 392 H342 L360 415 L342 438 H58 L40 415 Z" fill="url(#gold)"/>
-    <text x="200" y="422" text-anchor="middle"
+    <path d="M52 396 H348 L368 420 L348 444 H52 L32 420 Z" fill="url(#gold)"/>
+    <path d="M52 396 L32 420 L52 444 Z" fill="#8a6520" opacity=".5"/>
+    <path d="M348 396 L368 420 L348 444 Z" fill="#8a6520" opacity=".5"/>
+    <text x="200" y="426" text-anchor="middle"
           font-family="Georgia,'Times New Roman',serif" font-size="16.5"
-          letter-spacing="3.2" fill="#16233a" font-weight="700">SAPIENTIA ET LUX</text>
+          letter-spacing="3.2" fill="#12203a" font-weight="700">SAPIENTIA ET LUX</text>
   </g>
 </svg>
