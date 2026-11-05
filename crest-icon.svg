@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="400" height="400">
+<defs>
+    <linearGradient id="navy" x1="0" y1="0" x2=".25" y2="1">
+      <stop offset="0%" stop-color="#22374f"/>
+      <stop offset="52%" stop-color="#152540"/>
+      <stop offset="100%" stop-color="#0b1524"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7e4b4"/>
+      <stop offset="40%" stop-color="#d8b060"/>
+      <stop offset="100%" stop-color="#9c7329"/>
+    </linearGradient>
+    <linearGradient id="goldDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9b164"/>
+      <stop offset="100%" stop-color="#8a6620"/>
+    </linearGradient>
+    <radialGradient id="flame" gradientUnits="userSpaceOnUse" cx="200" cy="200" r="132">
+      <stop offset="0%" stop-color="#fffdf6"/>
+      <stop offset="34%" stop-color="#fbe6ad"/>
+      <stop offset="70%" stop-color="#e6bd6d"/>
+      <stop offset="100%" stop-color="#b5852f"/>
+    </radialGradient>
+    <filter id="soft" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+    <filter id="core" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+    <clipPath id="shieldClip">
+      <path d="M200 24 L352 72 V226 C352 316 286 376 200 406 C114 376 48 316 48 226 V72 Z"/>
+    </clipPath>
+  </defs>
+  <g transform="translate(63,28) scale(0.9) translate(-48,-24)">
+  <path d="M200 24 L352 72 V226 C352 316 286 376 200 406 C114 376 48 316 48 226 V72 Z"
+        fill="url(#navy)" stroke="url(#gold)" stroke-width="9" stroke-linejoin="round"/>
+
+  <g clip-path="url(#shieldClip)">
+    <path d="M200 48 L332 90 V226 C332 304 274 358 200 386 C126 358 68 304 68 226 V90 Z"
+          fill="none" stroke="url(#gold)" stroke-width="2.4" opacity=".5"/>
+
+    <!-- 火焰 -->
+    <path d="M200 62 C213 98 223 132 223 164 C223 196 213 218 200 218 C187 218 177 196 177 164 C177 132 187 98 200 62 Z"
+          fill="#e8c37b" opacity=".5" filter="url(#soft)"/>
+    <path d="M200 62 C213 98 223 132 223 164 C223 196 213 218 200 218 C187 218 177 196 177 164 C177 132 187 98 200 62 Z"
+          fill="url(#flame)"/>
+    <ellipse cx="200" cy="192" rx="12.5" ry="18" fill="#fffdf6" opacity=".85" filter="url(#core)"/>
+
+    <path d="M155 219 H245 L236 247 H164 Z" fill="url(#gold)"/>
+    <path d="M164 247 H236 L228 264 H172 Z" fill="url(#goldDark)"/>
+    <path d="M187 264 H213 L209 318 H191 Z" fill="url(#gold)"/>
+    <path d="M191 318 H209 L212 322 H188 Z" fill="url(#goldDark)"/>
+    <path d="M176 322 H224 L234 344 H166 Z" fill="url(#goldDark)"/>
+    <path d="M166 344 H234 V349 H166 Z" fill="url(#gold)"/>
+
+  </g>
+  </g>
+</svg>
